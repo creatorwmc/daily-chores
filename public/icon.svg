@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#2E7D32"/>
+  <g transform="translate(80, 80)" fill="none" stroke="white" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Clipboard -->
+    <rect x="48" y="16" width="256" height="320" rx="16" fill="none"/>
+    <rect x="128" y="0" width="96" height="40" rx="8" fill="white"/>
+    <!-- Check marks -->
+    <polyline points="96,120 128,152 208,72" stroke-width="28"/>
+    <polyline points="96,216 128,248 208,168" stroke-width="28"/>
+    <line x1="96" y1="296" x2="208" y2="296" stroke-width="20" opacity="0.5"/>
+  </g>
+</svg>
