@@ -8,9 +8,9 @@
 
 :root {
   /* === PRIMARY PALETTE === */
-  --barn-red: #8B2E1E;
-  --barn-red-light: #A8483A;
-  --barn-red-dark: #6B2016;
+  --barn-red: #B5452F;
+  --barn-red-light: #C96650;
+  --barn-red-dark: #8B2E1E;
 
   --harvest-gold: #C8922A;
   --harvest-gold-light: #DEAB42;
@@ -45,8 +45,8 @@
   --primary: var(--barn-red);
   --primary-light: var(--barn-red-light);
   --primary-dark: var(--barn-red-dark);
-  --bg: var(--cream-white);
-  --surface: var(--egg-cream);
+  --bg: var(--egg-cream-light);
+  --surface: #FFFFFF;
   --text: var(--soil-brown);
   --text-secondary: var(--soil-brown-light);
   --border: var(--egg-cream-dark);

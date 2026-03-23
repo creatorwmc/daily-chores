@@ -6,14 +6,14 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
         name: 'Daily Chores',
         short_name: 'Chores',
         description: 'Track daily household chores for you and your partner',
-        theme_color: '#2E7D32',
-        background_color: '#F5F5F5',
+        theme_color: '#8B2E1E',
+        background_color: '#FAF6EE',
         display: 'standalone',
         orientation: 'portrait',
         icons: [
