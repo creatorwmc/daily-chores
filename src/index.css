@@ -66,6 +66,7 @@
   --badge-tier-10: #F0C820;
 }
 
+/* Dark mode available but disabled by default — use settings toggle to enable
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #1A1412;
@@ -84,6 +85,7 @@
     --egg-cream-dark: #3D3028;
   }
 }
+*/
 
 body {
   font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
