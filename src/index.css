@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Nunito:wght@400;500;600;700;800&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -5,24 +7,94 @@
 }
 
 :root {
-  --primary: #2E7D32;
-  --primary-light: #4CAF50;
-  --primary-dark: #1B5E20;
-  --bg: #F5F5F5;
-  --surface: #FFFFFF;
-  --text: #212121;
-  --text-secondary: #757575;
-  --border: #E0E0E0;
-  --danger: #D32F2F;
-  --success: #43A047;
+  /* === PRIMARY PALETTE === */
+  --barn-red: #8B2E1E;
+  --barn-red-light: #A8483A;
+  --barn-red-dark: #6B2016;
+
+  --harvest-gold: #C8922A;
+  --harvest-gold-light: #DEAB42;
+  --harvest-gold-dark: #A07422;
+
+  --pasture-green: #4A7C3F;
+  --pasture-green-light: #6B9A5E;
+  --pasture-green-dark: #355E2E;
+
+  --egg-cream: #F5ECD7;
+  --egg-cream-light: #FAF6EE;
+  --egg-cream-dark: #E8DCC0;
+
+  --soil-brown: #5C3D2E;
+  --soil-brown-light: #7A5E47;
+  --soil-brown-dark: #3D271D;
+
+  --sky-blue: #6B9BC3;
+  --sky-blue-light: #8DB5D6;
+  --sky-blue-dark: #4E7DA3;
+
+  /* === SUPPORTING TONES === */
+  --copper: #B87333;
+  --wheat: #DEB887;
+  --iron: #3D3D3D;
+  --sunset-coral: #D4785C;
+  --sage: #8FA878;
+  --lavender-dusk: #9B7FA8;
+  --cream-white: #FAF6EE;
+
+  /* === SEMANTIC MAPPING === */
+  --primary: var(--barn-red);
+  --primary-light: var(--barn-red-light);
+  --primary-dark: var(--barn-red-dark);
+  --bg: var(--cream-white);
+  --surface: var(--egg-cream);
+  --text: var(--soil-brown);
+  --text-secondary: var(--soil-brown-light);
+  --border: var(--egg-cream-dark);
+  --danger: #B33A3A;
+  --success: var(--pasture-green);
+
+  /* === BADGE TIER GLOW PROGRESSION === */
+  --badge-tier-1: #5C3D2E;
+  --badge-tier-2: #6B4D3A;
+  --badge-tier-3: #7A5E47;
+  --badge-tier-4: #8B6F54;
+  --badge-tier-5: #9C7F5C;
+  --badge-tier-6: #B08C4A;
+  --badge-tier-7: #C49A38;
+  --badge-tier-8: #D4A82E;
+  --badge-tier-9: #E4B824;
+  --badge-tier-10: #F0C820;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1A1412;
+    --surface: #2A2118;
+    --text: #E8DCC0;
+    --text-secondary: #B8A88A;
+    --border: #3D3028;
+    --primary: #C4503A;
+    --primary-light: #D46B58;
+    --primary-dark: #A8483A;
+    --danger: #D46B58;
+    --success: #6B9A5E;
+    --cream-white: #1A1412;
+    --egg-cream: #2A2118;
+    --egg-cream-light: #2A2118;
+    --egg-cream-dark: #3D3028;
+  }
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
 }
 
 button {
@@ -32,8 +104,9 @@ button {
   padding: 12px 24px;
   font-size: 1rem;
   font-weight: 600;
+  font-family: 'Nunito', sans-serif;
   background: var(--primary);
-  color: white;
+  color: var(--cream-white);
   transition: background 0.2s;
 }
 
@@ -48,12 +121,12 @@ button:disabled {
 
 button.btn-secondary {
   background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
 }
 
 button.btn-secondary:hover {
-  background: var(--border);
+  background: var(--egg-cream-dark);
 }
 
 input, select {
@@ -62,15 +135,16 @@ input, select {
   border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
   margin-bottom: 12px;
-  background: var(--surface);
+  background: var(--egg-cream-light);
   color: var(--text);
 }
 
 input:focus, select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+  box-shadow: 0 0 0 2px rgba(139, 46, 30, 0.15);
 }
 
 .loading-screen {
