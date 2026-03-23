@@ -19,6 +19,7 @@ import CalendarView from './CalendarView';
 import AddChore from './AddChore';
 import History from './History';
 import Badges from './Badges';
+import Family from './Family';
 import HouseholdSetup from './HouseholdSetup';
 import { getBadgeCategory, computeBadgeProgress } from '../data/badges';
 
@@ -34,6 +35,7 @@ export default function Dashboard() {
   const [view, setView] = useState('list'); // 'list' | 'calendar'
   const [showHistory, setShowHistory] = useState(false);
   const [showBadges, setShowBadges] = useState(false);
+  const [showFamily, setShowFamily] = useState(false);
 
   // Find user's household
   useEffect(() => {
@@ -215,6 +217,7 @@ export default function Dashboard() {
         onToggleView={() => setView(view === 'list' ? 'calendar' : 'list')}
         onOpenHistory={() => setShowHistory(true)}
         onOpenBadges={() => setShowBadges(true)}
+        onOpenFamily={() => setShowFamily(true)}
         hasBadges={completions.filter((c) => c.userId === user.uid).length >= 5}
       />
 
@@ -242,6 +245,14 @@ export default function Dashboard() {
           onReorder={reorderChores}
           onAssign={assignChore}
           showIrregular={showIrregular}
+        />
+      )}
+
+      {showFamily && (
+        <Family
+          householdId={householdId}
+          userId={user.uid}
+          onClose={() => setShowFamily(false)}
         />
       )}
 

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
-export default function Header({ showIrregular, onToggleIrregular, view, onToggleView, onOpenHistory, onOpenBadges, hasBadges }) {
+export default function Header({ showIrregular, onToggleIrregular, view, onToggleView, onOpenHistory, onOpenBadges, onOpenFamily, hasBadges }) {
   const { user, logout, resetPassword } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [message, setMessage] = useState('');
@@ -74,6 +74,9 @@ export default function Header({ showIrregular, onToggleIrregular, view, onToggl
                 Badges Unlocked
               </button>
             )}
+            <button className="settings-item" onClick={() => { onOpenFamily(); setMenuOpen(false); }}>
+              Family
+            </button>
             <button className="settings-item" onClick={() => { onOpenHistory(); setMenuOpen(false); }}>
               History
             </button>

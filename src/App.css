@@ -391,6 +391,117 @@
   border-top: 1px solid var(--border);
 }
 
+/* Family Panel */
+.family-content {
+  padding: 16px;
+}
+
+.family-section {
+  margin-bottom: 20px;
+}
+
+.family-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+
+.family-value {
+  display: block;
+  font-family: 'Lora', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.family-household-name {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.family-member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.family-member {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--egg-cream-light);
+  border-radius: 12px;
+}
+
+.family-member-avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--cream-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  font-family: 'Lora', serif;
+}
+
+.family-member-info {
+  flex: 1;
+}
+
+.family-member-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.family-you-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--primary);
+  color: var(--cream-white);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.family-member-status {
+  font-size: 0.75rem;
+  color: var(--pasture-green);
+  font-weight: 600;
+}
+
+.family-join-code {
+  font-family: 'Lora', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--primary);
+  background: var(--egg-cream-light);
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1.5px dashed var(--border);
+}
+
+.family-join-hint {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 6px;
+  text-align: center;
+}
+
 /* Badges */
 .badges-panel {
   max-height: 85vh;
