@@ -788,6 +788,131 @@
   font-style: italic;
 }
 
+/* Badge Unlock Animation */
+@keyframes badge-unlock-in {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.1); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes badge-glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(200, 146, 42, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(200, 146, 42, 0.6); }
+}
+
+@keyframes confetti-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.badge-unlock-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.badge-unlock {
+  background: var(--egg-cream-light);
+  border-radius: 24px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  animation: badge-unlock-in 0.6s ease-out;
+  box-shadow: 0 16px 48px rgba(92, 61, 46, 0.3);
+}
+
+.badge-unlock-confetti {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 12px;
+  animation: confetti-bounce 1s ease-in-out infinite;
+}
+
+.badge-unlock-title {
+  font-family: 'Lora', serif;
+  font-size: 1.5rem;
+  color: var(--harvest-gold-dark);
+  margin-bottom: 8px;
+}
+
+.badge-unlock-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.badge-unlock-card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 2px solid var(--harvest-gold-light);
+  animation: badge-glow-pulse 2s ease-in-out infinite;
+}
+
+.badge-unlock-emoji {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.badge-unlock-name {
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.badge-unlock-tier {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.badge-unlock-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.badge-unlock-milestone {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+  text-align: left;
+  padding: 14px;
+  background: var(--surface);
+  border-radius: 12px;
+  border-left: 3px solid var(--harvest-gold);
+  margin-bottom: 16px;
+}
+
+.badge-unlock-btn {
+  width: 100%;
+  background: var(--harvest-gold);
+  color: var(--soil-brown-dark);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px;
+  border-radius: 12px;
+}
+
+.badge-unlock-btn:hover {
+  background: var(--harvest-gold-dark);
+}
+
 .badge-popup-milestone {
   font-size: 0.95rem;
   line-height: 1.6;

@@ -19,6 +19,7 @@ import CalendarView from './CalendarView';
 import AddChore from './AddChore';
 import History from './History';
 import Badges from './Badges';
+import BadgeUnlock from './BadgeUnlock';
 import Family from './Family';
 import HouseholdSetup from './HouseholdSetup';
 import { getBadgeCategory, computeBadgeProgress } from '../data/badges';
@@ -36,6 +37,8 @@ export default function Dashboard() {
   const [showHistory, setShowHistory] = useState(false);
   const [showBadges, setShowBadges] = useState(false);
   const [showFamily, setShowFamily] = useState(false);
+  const [badgeUnlock, setBadgeUnlock] = useState(null);
+  const [prevCompletedCount, setPrevCompletedCount] = useState(null);
 
   // Find user's household
   useEffect(() => {
@@ -88,6 +91,65 @@ export default function Dashboard() {
     );
     return unsub;
   }, [householdId]);
+
+  // Detect badge unlocks when completions change
+  useEffect(() => {
+    if (!user || completions.length === 0) return;
+
+    const myCompleted = completions.filter(
+      (c) => c.userId === user.uid && (c.status === 'completed' || !c.status)
+    );
+    const currentCount = myCompleted.length;
+
+    // Skip on first load (prevCompletedCount is null)
+    if (prevCompletedCount === null) {
+      setPrevCompletedCount(currentCount);
+      return;
+    }
+
+    // Only check if count increased
+    if (currentCount > prevCompletedCount) {
+      const isFirstEver = prevCompletedCount === 0 && currentCount >= 1;
+
+      // Check per-chore badges
+      for (const chore of chores) {
+        const category = chore.badgeCategory || getBadgeCategory(chore.name);
+        const count = myCompleted.filter((c) => c.choreId === chore.id).length;
+        const prevCount = count - (currentCount - prevCompletedCount); // approximate
+        const progress = computeBadgeProgress(count, category, 'individual');
+        const prevProgress = computeBadgeProgress(Math.max(0, prevCount), category, 'individual');
+
+        if (progress.currentTier > prevProgress.currentTier) {
+          const newBadge = progress.earned[progress.earned.length - 1];
+          setBadgeUnlock({ badge: newBadge, category, scope: 'individual', isFirst: isFirstEver });
+          setPrevCompletedCount(currentCount);
+          return;
+        }
+      }
+
+      // Check overall badge
+      const overallProgress = computeBadgeProgress(currentCount, 'overall', 'individual');
+      const prevOverall = computeBadgeProgress(prevCompletedCount, 'overall', 'individual');
+      if (overallProgress.currentTier > prevOverall.currentTier) {
+        const newBadge = overallProgress.earned[overallProgress.earned.length - 1];
+        setBadgeUnlock({ badge: newBadge, category: 'overall', scope: 'individual', isFirst: isFirstEver });
+        setPrevCompletedCount(currentCount);
+        return;
+      }
+
+      // No badge crossed, but if it's the very first completion, still celebrate
+      if (isFirstEver) {
+        setBadgeUnlock({
+          badge: { emoji: '\uD83C\uDF1F', name: 'First Step', description: 'You completed your first chore!', tier: 0, threshold: 1 },
+          category: 'overall',
+          scope: 'individual',
+          isFirst: true,
+        });
+      }
+    }
+
+    setPrevCompletedCount(currentCount);
+  }, [completions, chores, user]);
 
   const toggleChore = async (choreId) => {
     const chore = chores.find((c) => c.id === choreId);
@@ -246,7 +308,7 @@ export default function Dashboard() {
         onOpenHistory={() => setShowHistory(true)}
         onOpenBadges={() => setShowBadges(true)}
         onOpenFamily={() => setShowFamily(true)}
-        hasBadges={completions.filter((c) => c.userId === user.uid).length >= 5}
+        hasBadges={completions.some((c) => c.userId === user.uid && (c.status === 'completed' || !c.status))}
       />
 
       {view === 'calendar' ? (
@@ -274,6 +336,16 @@ export default function Dashboard() {
           onReorder={reorderChores}
           onAssign={assignChore}
           showIrregular={showIrregular}
+        />
+      )}
+
+      {badgeUnlock && (
+        <BadgeUnlock
+          badge={badgeUnlock.badge}
+          category={badgeUnlock.category}
+          scope={badgeUnlock.scope}
+          isFirst={badgeUnlock.isFirst}
+          onClose={() => setBadgeUnlock(null)}
         />
       )}
 
