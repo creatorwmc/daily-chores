@@ -37,7 +37,7 @@ function AssignMenu({ members, userId, onAssign, onClose }) {
   );
 }
 
-function DraggableChoreItem({ chore, status, names, onToggle, onDelete, onRename, onAssign, orderedByName, members, userId, index, onDragStart, onDragOver, onDrop }) {
+function DraggableChoreItem({ chore, status, names, onToggle, onUncomplete, onDelete, onRename, onAssign, orderedByName, members, userId, index, onDragStart, onDragOver, onDrop }) {
   const done = status === 'completed';
   const accepted = status === 'accepted';
   const [showAssign, setShowAssign] = useState(false);
@@ -86,7 +86,8 @@ function DraggableChoreItem({ chore, status, names, onToggle, onDelete, onRename
       <button
         className={`chore-check ${done ? 'checked' : ''} ${accepted ? 'accepted' : ''}`}
         onClick={() => onToggle(chore.id)}
-        title={done ? 'Completed — click to undo' : accepted ? 'Accepted — click to complete' : 'Click to accept'}
+        onDoubleClick={(e) => { e.stopPropagation(); if (done) onUncomplete(chore.id); }}
+        title={done ? 'Completed — double-click to undo' : accepted ? 'Accepted — click to complete' : 'Click to accept'}
       >
         {done ? '\u2713' : accepted ? '\u2022' : ''}
       </button>
@@ -143,7 +144,7 @@ function DraggableChoreItem({ chore, status, names, onToggle, onDelete, onRename
   );
 }
 
-function DraggableList({ chores, freq, getStatus, completedBy, onToggle, onDelete, onRename, onReorder, onAssign, members, userId }) {
+function DraggableList({ chores, freq, getStatus, completedBy, onToggle, onUncomplete, onDelete, onRename, onReorder, onAssign, members, userId }) {
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);
 
@@ -180,6 +181,7 @@ function DraggableList({ chores, freq, getStatus, completedBy, onToggle, onDelet
           status={getStatus(chore.id, freq)}
           names={completedBy(chore.id, freq)}
           onToggle={onToggle}
+          onUncomplete={onUncomplete}
           onDelete={onDelete}
           onRename={onRename}
           onAssign={onAssign}
@@ -196,7 +198,7 @@ function DraggableList({ chores, freq, getStatus, completedBy, onToggle, onDelet
   );
 }
 
-export default function ChoreList({ chores, completions, userId, userName, members, onToggle, onDelete, onRename, onReorder, onAssign, showIrregular }) {
+export default function ChoreList({ chores, completions, userId, userName, members, onToggle, onUncomplete, onDelete, onRename, onReorder, onAssign, showIrregular }) {
   const [timeFilter, setTimeFilter] = useState('all');
   const [showCompleted, setShowCompleted] = useState(false);
   const [hideCompleted, setHideCompleted] = useState(true);
@@ -442,6 +444,7 @@ export default function ChoreList({ chores, completions, userId, userName, membe
                         getStatus={getStatus}
                         completedBy={completedByFn}
                         onToggle={onToggle}
+                        onUncomplete={onUncomplete}
                         onDelete={onDelete}
                         onRename={onRename}
                         onReorder={handleReorder}
@@ -459,6 +462,7 @@ export default function ChoreList({ chores, completions, userId, userName, membe
                   getStatus={getStatus}
                   completedBy={completedByFn}
                   onToggle={onToggle}
+                  onUncomplete={onUncomplete}
                   onDelete={onDelete}
                   onRename={onRename}
                   onReorder={handleReorder}
@@ -474,6 +478,7 @@ export default function ChoreList({ chores, completions, userId, userName, membe
                 getStatus={getStatus}
                 completedBy={completedByFn}
                 onToggle={onToggle}
+                onUncomplete={onUncomplete}
                 onDelete={onDelete}
                 onRename={onRename}
                 onReorder={handleReorder}

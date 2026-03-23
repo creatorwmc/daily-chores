@@ -145,6 +145,36 @@ export default function Dashboard() {
     }
   };
 
+  const uncompleteChore = async (choreId) => {
+    const chore = chores.find((c) => c.id === choreId);
+    const freq = chore?.frequency || 'daily';
+
+    const now = new Date();
+    const completionDate = new Date();
+    if (freq === 'daily') {
+      completionDate.setHours(0, 0, 0, 0);
+    } else if (freq === 'weekly') {
+      completionDate.setDate(now.getDate() - now.getDay());
+      completionDate.setHours(0, 0, 0, 0);
+    } else {
+      completionDate.setDate(1);
+      completionDate.setHours(0, 0, 0, 0);
+    }
+
+    const existing = completions.find((c) => {
+      if (c.choreId !== choreId || c.userId !== user.uid) return false;
+      const compDate = c.date?.toDate ? c.date.toDate() : new Date(c.date);
+      if (freq === 'daily') return compDate.toDateString() === completionDate.toDateString();
+      if (freq === 'weekly') return compDate >= completionDate;
+      return compDate.getMonth() === completionDate.getMonth() &&
+             compDate.getFullYear() === completionDate.getFullYear();
+    });
+
+    if (existing) {
+      await deleteDoc(doc(db, 'households', householdId, 'completions', existing.id));
+    }
+  };
+
   const addChore = async (name, assignedTo, entries) => {
     const badgeCategory = getBadgeCategory(name);
     const batch = entries.map((entry) => {
@@ -240,6 +270,7 @@ export default function Dashboard() {
           userName={user.displayName || user.email}
           members={householdMembers}
           onToggle={toggleChore}
+          onUncomplete={uncompleteChore}
           onDelete={deleteChore}
           onRename={renameChore}
           onReorder={reorderChores}
