@@ -6,6 +6,22 @@ export default function Header({ showIrregular, onToggleIrregular, view, onToggl
   const [menuOpen, setMenuOpen] = useState(false);
   const [message, setMessage] = useState('');
   const menuRef = useRef(null);
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+
+  // Capture the beforeinstallprompt event
+  useEffect(() => {
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      setIsInstalled(true);
+    }
+    const handler = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    window.addEventListener('appinstalled', () => setIsInstalled(true));
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -83,6 +99,26 @@ export default function Header({ showIrregular, onToggleIrregular, view, onToggl
             <button className="settings-item" onClick={handleResetPassword}>
               Reset Password
             </button>
+            {!isInstalled && (
+              <button
+                className="settings-item settings-install"
+                onClick={async () => {
+                  if (installPrompt) {
+                    installPrompt.prompt();
+                    const result = await installPrompt.userChoice;
+                    if (result.outcome === 'accepted') setIsInstalled(true);
+                    setInstallPrompt(null);
+                  } else {
+                    // iOS Safari fallback
+                    setMessage('Tap the share button, then "Add to Home Screen"');
+                    setTimeout(() => setMessage(''), 5000);
+                  }
+                }}
+              >
+                Add to Home Screen
+              </button>
+            )}
+            <div className="settings-divider" />
             <button className="settings-item settings-logout" onClick={logout}>
               Log Out
             </button>

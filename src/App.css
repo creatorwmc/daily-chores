@@ -1011,6 +1011,11 @@
   background: var(--bg);
 }
 
+.settings-install {
+  color: var(--pasture-green);
+  font-weight: 600;
+}
+
 .settings-logout {
   color: var(--danger);
 }
