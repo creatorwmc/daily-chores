@@ -4,6 +4,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 
 export default function Family({ householdId, userId, onClose }) {
   const [household, setHousehold] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!householdId) return;
@@ -75,6 +76,24 @@ export default function Family({ householdId, userId, onClose }) {
             <span className="family-label">Join Code</span>
             <div className="family-join-code">{household.joinCode}</div>
             <p className="family-join-hint">Share this code to invite someone to your household.</p>
+            <button
+              className="family-share-btn"
+              onClick={async () => {
+                const joinUrl = `${window.location.origin}?join=${household.joinCode}`;
+                const shareText = `Join my household on Daily Chores!\n${joinUrl}`;
+                if (navigator.share) {
+                  try {
+                    await navigator.share({ title: 'Join Daily Chores', text: shareText, url: joinUrl });
+                  } catch { /* user cancelled */ }
+                } else {
+                  await navigator.clipboard.writeText(joinUrl);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }
+              }}
+            >
+              {copied ? 'Link Copied!' : 'Share Invite Link'}
+            </button>
           </div>
         </div>
       </div>

@@ -502,6 +502,18 @@
   text-align: center;
 }
 
+.family-share-btn {
+  width: 100%;
+  margin-top: 12px;
+  background: var(--harvest-gold);
+  color: var(--soil-brown-dark);
+  font-weight: 700;
+}
+
+.family-share-btn:hover {
+  background: var(--harvest-gold-dark);
+}
+
 /* Badges */
 .badges-panel {
   max-height: 85vh;

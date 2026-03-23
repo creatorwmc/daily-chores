@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { db } from '../config/firebase';
 import { collection, addDoc, query, where, getDocs, updateDoc, arrayUnion, doc } from 'firebase/firestore';
 
@@ -8,6 +8,18 @@ export default function HouseholdSetup({ userId, userName }) {
   const [joinCode, setJoinCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Auto-fill join code from URL param
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('join');
+    if (code) {
+      setJoinCode(code.toUpperCase());
+      setMode('join');
+      // Clean up the URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
 
   const createHousehold = async (e) => {
     e.preventDefault();
