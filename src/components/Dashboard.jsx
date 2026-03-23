@@ -192,10 +192,8 @@ export default function Dashboard() {
     setShowAdd(false);
   };
 
-  const renameChore = async (choreId, newName) => {
-    await updateDoc(doc(db, 'households', householdId, 'chores', choreId), {
-      name: newName,
-    });
+  const editChore = async (choreId, changes) => {
+    await updateDoc(doc(db, 'households', householdId, 'chores', choreId), changes);
   };
 
   const assignChore = async (choreId, assignedToUid, requestedByName) => {
@@ -272,7 +270,7 @@ export default function Dashboard() {
           onToggle={toggleChore}
           onUncomplete={uncompleteChore}
           onDelete={deleteChore}
-          onRename={renameChore}
+          onEditChore={editChore}
           onReorder={reorderChores}
           onAssign={assignChore}
           showIrregular={showIrregular}

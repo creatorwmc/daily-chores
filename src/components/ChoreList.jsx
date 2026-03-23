@@ -37,24 +37,45 @@ function AssignMenu({ members, userId, onAssign, onClose }) {
   );
 }
 
-function DraggableChoreItem({ chore, status, names, onToggle, onUncomplete, onDelete, onRename, onAssign, orderedByName, members, userId, index, onDragStart, onDragOver, onDrop }) {
+function DraggableChoreItem({ chore, status, names, onToggle, onUncomplete, onDelete, onEditChore, onAssign, orderedByName, members, userId, index, onDragStart, onDragOver, onDrop }) {
   const done = status === 'completed';
   const accepted = status === 'accepted';
   const [showAssign, setShowAssign] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(chore.name);
+  const [editFrequency, setEditFrequency] = useState(chore.frequency || 'daily');
+  const [editTimeOfDay, setEditTimeOfDay] = useState(chore.timeOfDay || 'morning');
 
-  const handleRenameSubmit = () => {
+  const handleEditSubmit = () => {
     const trimmed = editName.trim();
-    if (trimmed && trimmed !== chore.name) {
-      onRename(chore.id, trimmed);
+    if (!trimmed) { setEditing(false); return; }
+    const changes = {};
+    if (trimmed !== chore.name) changes.name = trimmed;
+    if (editFrequency !== (chore.frequency || 'daily')) changes.frequency = editFrequency;
+    if (editFrequency === 'daily' && editTimeOfDay !== (chore.timeOfDay || 'morning')) {
+      changes.timeOfDay = editTimeOfDay;
+    }
+    if (Object.keys(changes).length > 0) {
+      onEditChore(chore.id, changes);
     }
     setEditing(false);
   };
 
-  const handleRenameKeyDown = (e) => {
-    if (e.key === 'Enter') handleRenameSubmit();
-    if (e.key === 'Escape') { setEditName(chore.name); setEditing(false); }
+  const handleEditKeyDown = (e) => {
+    if (e.key === 'Enter') handleEditSubmit();
+    if (e.key === 'Escape') {
+      setEditName(chore.name);
+      setEditFrequency(chore.frequency || 'daily');
+      setEditTimeOfDay(chore.timeOfDay || 'morning');
+      setEditing(false);
+    }
+  };
+
+  const startEditing = () => {
+    setEditName(chore.name);
+    setEditFrequency(chore.frequency || 'daily');
+    setEditTimeOfDay(chore.timeOfDay || 'morning');
+    setEditing(true);
   };
 
   // Determine assignment display
@@ -93,19 +114,47 @@ function DraggableChoreItem({ chore, status, names, onToggle, onUncomplete, onDe
       </button>
       <div className="chore-info">
         {editing ? (
-          <input
-            className="chore-rename-input"
-            value={editName}
-            onChange={(e) => setEditName(e.target.value)}
-            onBlur={handleRenameSubmit}
-            onKeyDown={handleRenameKeyDown}
-            autoFocus
-          />
+          <div className="chore-edit-form">
+            <input
+              className="chore-rename-input"
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+              onKeyDown={handleEditKeyDown}
+              autoFocus
+            />
+            <div className="chore-edit-row">
+              <select
+                className="chore-edit-select"
+                value={editFrequency}
+                onChange={(e) => setEditFrequency(e.target.value)}
+              >
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="irregular">Irregular</option>
+              </select>
+              {editFrequency === 'daily' && (
+                <select
+                  className="chore-edit-select"
+                  value={editTimeOfDay}
+                  onChange={(e) => setEditTimeOfDay(e.target.value)}
+                >
+                  <option value="morning">Morning</option>
+                  <option value="afternoon">Afternoon</option>
+                  <option value="evening">Evening</option>
+                </select>
+              )}
+            </div>
+            <div className="chore-edit-actions">
+              <button className="btn-secondary chore-edit-btn-cancel" onClick={() => setEditing(false)}>Cancel</button>
+              <button className="chore-edit-btn-save" onClick={handleEditSubmit}>Save</button>
+            </div>
+          </div>
         ) : (
           <span
             className="chore-name"
-            onDoubleClick={() => { setEditName(chore.name); setEditing(true); }}
-            title="Double-click to rename"
+            onDoubleClick={startEditing}
+            title="Double-click to edit"
           >
             {chore.name}
           </span>
@@ -144,7 +193,7 @@ function DraggableChoreItem({ chore, status, names, onToggle, onUncomplete, onDe
   );
 }
 
-function DraggableList({ chores, freq, getStatus, completedBy, onToggle, onUncomplete, onDelete, onRename, onReorder, onAssign, members, userId }) {
+function DraggableList({ chores, freq, getStatus, completedBy, onToggle, onUncomplete, onDelete, onEditChore, onReorder, onAssign, members, userId }) {
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);
 
@@ -183,7 +232,7 @@ function DraggableList({ chores, freq, getStatus, completedBy, onToggle, onUncom
           onToggle={onToggle}
           onUncomplete={onUncomplete}
           onDelete={onDelete}
-          onRename={onRename}
+          onEditChore={onEditChore}
           onAssign={onAssign}
           orderedByName={chore.orderedByName || null}
           members={members}
@@ -198,7 +247,7 @@ function DraggableList({ chores, freq, getStatus, completedBy, onToggle, onUncom
   );
 }
 
-export default function ChoreList({ chores, completions, userId, userName, members, onToggle, onUncomplete, onDelete, onRename, onReorder, onAssign, showIrregular }) {
+export default function ChoreList({ chores, completions, userId, userName, members, onToggle, onUncomplete, onDelete, onEditChore, onReorder, onAssign, showIrregular }) {
   const [timeFilter, setTimeFilter] = useState('all');
   const [showCompleted, setShowCompleted] = useState(false);
   const [hideCompleted, setHideCompleted] = useState(true);
@@ -446,7 +495,7 @@ export default function ChoreList({ chores, completions, userId, userName, membe
                         onToggle={onToggle}
                         onUncomplete={onUncomplete}
                         onDelete={onDelete}
-                        onRename={onRename}
+                        onEditChore={onEditChore}
                         onReorder={handleReorder}
                         onAssign={handleAssign}
                         members={members}
@@ -464,7 +513,7 @@ export default function ChoreList({ chores, completions, userId, userName, membe
                   onToggle={onToggle}
                   onUncomplete={onUncomplete}
                   onDelete={onDelete}
-                  onRename={onRename}
+                  onEditChore={onEditChore}
                   onReorder={handleReorder}
                   onAssign={handleAssign}
                   members={members}
@@ -480,7 +529,7 @@ export default function ChoreList({ chores, completions, userId, userName, membe
                 onToggle={onToggle}
                 onUncomplete={onUncomplete}
                 onDelete={onDelete}
-                onRename={onRename}
+                onEditChore={onEditChore}
                 onReorder={handleReorder}
                 onAssign={handleAssign}
                 members={members}

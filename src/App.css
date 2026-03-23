@@ -296,10 +296,17 @@
   margin-top: 1px;
 }
 
-/* Inline Rename */
+/* Inline Edit */
+.chore-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
 .chore-rename-input {
   width: 100%;
-  padding: 4px 8px;
+  padding: 6px 8px;
   margin-bottom: 0;
   font-size: 0.9rem;
   font-weight: 500;
@@ -307,6 +314,38 @@
   border-radius: 6px;
   background: var(--surface);
   box-shadow: 0 0 0 2px rgba(139, 46, 30, 0.15);
+}
+
+.chore-edit-row {
+  display: flex;
+  gap: 6px;
+}
+
+.chore-edit-select {
+  flex: 1;
+  padding: 6px 8px;
+  margin-bottom: 0;
+  font-size: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.chore-edit-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.chore-edit-btn-cancel {
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  min-width: auto;
+}
+
+.chore-edit-btn-save {
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  min-width: auto;
 }
 
 .chore-name {
