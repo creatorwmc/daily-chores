@@ -12,7 +12,7 @@ export default defineConfig({
         name: 'Daily Chores',
         short_name: 'Chores',
         description: 'Track daily household chores for you and your partner',
-        theme_color: '#8B2E1E',
+        theme_color: '#FAF6EE',
         background_color: '#FAF6EE',
         display: 'standalone',
         orientation: 'portrait',
