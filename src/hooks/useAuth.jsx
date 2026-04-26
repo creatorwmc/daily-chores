@@ -7,6 +7,8 @@ import {
   signOut,
   updateProfile,
   sendPasswordResetEmail,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth';
 
 const AuthContext = createContext(null);
@@ -41,12 +43,21 @@ export function AuthProvider({ children }) {
     return cred;
   };
 
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const cred = await signInWithPopup(auth, provider);
+    // Google provides displayName automatically on the auth user; no Firestore
+    // profile doc is created here because the existing email signup flow also
+    // relies solely on Firebase Auth's displayName (see signup above).
+    return cred;
+  };
+
   const logout = () => signOut(auth);
 
   const resetPassword = (email) => sendPasswordResetEmail(auth, email);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, resetPassword }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );
