@@ -9,10 +9,9 @@ When running or testing the application:
 - Commit changes to GitHub as needed
 - Do NOT deploy directly to Netlify/production
 
-**Production deployment is automated:**
-- Nightly deployments are handled via GitHub Actions
-- Do NOT manually deploy to production
-- All production deploys happen automatically from the main branch
+**Production deployment is manual, on request:**
+- There is no CI deploy — the nightly workflow was removed 2026-06-01
+- Ship with a local `netlify deploy --prod`, only when explicitly asked
 
 ## Development Commands
 
@@ -34,15 +33,15 @@ When making changes:
 1. Make the code changes
 2. Test locally with `npm run dev`
 3. Commit to GitHub when ready
-4. Production will auto-deploy nightly via GitHub Actions
+4. Production ships only when asked, via a local `netlify deploy --prod`
 
 ## Project Context
 
 - **Purpose**: Simple daily chore tracker for two people (husband and wife)
 - **Users**: Zach and Stacey (synced via Firebase household)
 - **Backend**: Firebase (Auth, Firestore)
-- **Hosting**: Netlify (automated nightly deploys)
-- **CI/CD**: GitHub Actions nightly deploy
+- **Hosting**: Netlify
+- **CI/CD**: none, by policy — deploy on request
 
 ## Key Features
 
