@@ -16,6 +16,7 @@ export default defineConfig({
         background_color: '#FAF6EE',
         display: 'standalone',
         orientation: 'portrait',
+        launch_handler: { client_mode: 'focus-existing' },
         icons: [
           {
             src: 'icon.svg',
